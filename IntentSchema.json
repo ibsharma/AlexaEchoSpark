@@ -1,0 +1,50 @@
+{
+    "intents": [
+    {
+      "intent": "echoSparkRecents"
+    },
+    {
+      "intent": "echoSparkMentions"
+    },
+    {
+      "intent": "echoSparkRepeat"
+    },
+    {
+      "intent": "echoSparkTeams",
+      "slots": [
+        {
+            "name": "teamName",
+            "type": "Team"
+        }
+      ]
+    },
+    {
+      "intent": "echoSparkRooms",
+      "slots": [
+        {
+            "name": "roomName",
+            "type": "Room"
+        }
+      ]
+    },  
+      
+    {
+      "intent": "echoSparkConfirmRoomToMessage",
+      "slots": [
+        {
+            "name": "roomName",
+            "type": "Room"
+        }
+       ]
+    },
+    {
+      "intent": "echoSparkSendMessage",
+      "slots": [
+        {
+            "name": "message",
+            "type": "LITERAL"
+        }
+       ]
+    }
+  ]
+}
