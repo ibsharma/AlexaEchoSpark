@@ -1,5 +1,5 @@
 
-
+var request = require('request');
 var sparkDeveloperUrl = 'https://api.ciscospark.com/v1';
 var sparkAccessToken = null;
 
@@ -75,10 +75,35 @@ postMethod = (postParam, postData) => {
 
 // Helpers
 
+
 getRequest = (requestUrl, accessToken) => {
 
-}
+  var headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization':'Bearer ' + accessToken
+  };
+  request({headers: headers, uri: requestUrl}, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      return JSON.parse(body);
+    }
+    else
+      return "Error";
+  });
+};
 
-postRequest = () => {
-
-}
+postRequest = (requestUrl, accessToken, postBody) => {
+  var json_postBody = JSON.parse(postBody);
+  var headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization':'Bearer ' + accessToken
+  };
+  request({headers: headers, uri: requestUrl, body: json_postBody, method:'POST'}, function (error, response, body){
+    if (!error && response.statusCode == 200) {
+      return body;
+    }
+    else
+      return "Error";
+  });
+};
