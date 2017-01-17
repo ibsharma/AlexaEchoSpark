@@ -14,11 +14,11 @@ getMethod = (getParam, getData = null) => {
         return getRequest(url, sparkAccessToken);
       }
       // TO DO : check if getData instanceof dict ?
-      if('roomId' in getData && 'showSipAddress' in getData && getData instanceof dict) {
+      if(getData.hasOwnProperty(roomId) && getData.hasOwnProperty('showSipAddress') && getData instanceof dict) {
         var url = sparkDeveloperUrl + '/' + getParam + '/' + getData.roomId + '?' + 'showSipAddress=' + getData.showSipAddress;
         return getRequest(url, sparkAccessToken);
       }
-      if('roomId' in getData && getData instanceof dict) {
+      if(getData.hasOwnProperty(roomId) && getData instanceof dict) {
         var url = sparkDeveloperUrl + '/' + getParam + '/' + getData.roomId;
         return getRequest(url, sparkAccessToken);
       } else if(getData instanceof dict) {
@@ -28,7 +28,7 @@ getMethod = (getParam, getData = null) => {
         return getRequest(url, sparkAccessToken);
       }
     } else if(getParam == 'messages') { // TO DO : Check exact usage here
-        if('messageId' in getData && getData instanceof dict) {
+        if(getData.hasOwnProperty('messageId') && getData instanceof dict) {
           var url = sparkDeveloperUrl + '/' + getParam + '/' + getData.messageId;
           return getRequest(url, sparkAccessToken);
         } else if(getData instanceof dict) {
@@ -44,7 +44,6 @@ getMethod = (getParam, getData = null) => {
     }
     return "Unsupported request";
   }
-
 }
 
 postMethod = (postParam, postData) => {

@@ -25,8 +25,8 @@ exports.handler = (event, context, callback) => {
 			return generateResponse((buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
 		}
 	} else if(event.request.type == "IntentRequest") {
-		if (sparkAccessToken in event.session.user) {
-			Spark.sparkToken = event.session.user.accessToken;
+		if (event.session.user.hasOwnProperty(sparkAccessToken)) { // To DO: OwnProperty?
+			Spark.sparkAccessToken = event.session.user.accessToken;
 			return intentHelper(event.request, event.session);
 		} else {
 			var sessionAttribute = {};
@@ -54,6 +54,12 @@ exports.handler = (event, context, callback) => {
 			return Intents.getConfirmRoomToMessage(intent, intentSession);
 		} else if(intentName == "echoSparkSendMessage") {
 			return Intents.getSendMessage(intent, intentSession);
+		} else if(intentName == "AMAZON.HelpIntent") {
+			return getResponse();
+		} else if(intentName == "AMAZON.YesIntent") {
+			return Intents.getYesIntent(intent, intentSession);
+		} else if(intentName == "AMAZON.NoIntent") {
+			return Intents.getNoIntent(intent, intentSession);
 		} else {
 			// Invalid intent
 		}
@@ -66,7 +72,7 @@ exports.handler = (event, context, callback) => {
 		return '';
 	}
 	getResponse = () => {
-		var output = Actions.recentActivity();// From another file
+		var output = Actions.recentActivity();
 		var sessionAttribute = {'intentSequence': ['welcome']};
 		var shouldEndSession = false;
 

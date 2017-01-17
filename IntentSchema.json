@@ -4,10 +4,13 @@
       "intent": "echoSparkRecents"
     },
     {
-      "intent": "echoSparkMentions"
+      "intent": "AMAZON.HelpIntent"
     },
     {
-      "intent": "echoSparkRepeat"
+      "intent": "AMAZON.YesIntent"
+    },
+    {
+      "intent": "AMAZON.NoIntent"
     },
     {
       "intent": "echoSparkTeams",
