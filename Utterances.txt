@@ -1,17 +1,8 @@
-echoSparkRepeat can you repeat that
-echoSparkRepeat Say that again
-
 echoSparkRecents Are there any recent updates
 echoSparkRecents Recent messages
 echoSparkRecents Unread messages
 echoSparkRecents Are there any unread messages
 echoSparkRecents Any direct messages
-
-echoSparkMentions Are there any mentions of my name
-echoSparkMentions Any important messages
-  
-echoSparkTeams  Any updates for team {teamName}
-echoSparkTeams  Any updates for {teamName}
 
 echoSparkRooms  Any updates for room {roomName}
 echoSparkRooms  Any updates for {roomName}

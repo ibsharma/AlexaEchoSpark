@@ -2,7 +2,7 @@ var Spark = require ('Spark.js');
 var Intents = require ('Intents.js');
 var Actions = require ('Actions.js');
 
-exports.handler = (event, context, callback) => {
+lambda_handler = (event, context, callback) => {
 
 	var sparkAccessToken = "MjYyZThjZGQtNTlhMS00ZTI5LWJlZTEtYjVhZDUzODY1YWU1YTJhZDY2ZjYtNTA2";
 
@@ -24,7 +24,7 @@ exports.handler = (event, context, callback) => {
 			sessionAttribute = {};
 			output = "Please login into your Cisco Spark developer account";
 			shouldEndSession = true;
-			return generateResponse((buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
+			return generateResponse(buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
 		}
 	} else if(event.request.type == "IntentRequest") {
 		if (event.session.user.hasOwnProperty('accessToken')) { 
@@ -34,11 +34,12 @@ exports.handler = (event, context, callback) => {
 			sessionAttribute = {};
 			output = "Please login into your Cisco Spark developer account";
 			shouldEndSession = true;
-			return generateResponse((buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
+			return generateResponse(buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
 		}
 	} else if(event.request.type == "SessionEndedRequest") {
 		return sessionEndedHelper(event.request, event.session);
 	}
+}
 
 // Here come the Helper functions
 	launchHelper = (eventRequest, eventSession) => {
@@ -88,4 +89,3 @@ exports.handler = (event, context, callback) => {
 
 		return Spark.generateResponse(buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
 	}
-}
