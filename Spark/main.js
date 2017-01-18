@@ -1,17 +1,19 @@
-require ('Spark.js');
-require ('Intents.js');
-require ('Actions.js');
-
+var Spark = require ('Spark.js');
+var Intents = require ('Intents.js');
+var Actions = require ('Actions.js');
 
 exports.handler = (event, context, callback) => {
 
-	var sparkAccessToken = MjYyZThjZGQtNTlhMS00ZTI5LWJlZTEtYjVhZDUzODY1YWU1YTJhZDY2ZjYtNTA2;
+	var sparkAccessToken = "MjYyZThjZGQtNTlhMS00ZTI5LWJlZTEtYjVhZDUzODY1YWU1YTJhZDY2ZjYtNTA2";
 
 	//TO DO : Invalid app check
 
 	//TO DO : New session check
 
 	event.session.user.accessToken = sparkAccessToken;
+	var sessionAttribute;
+	var shouldEndSession;
+	var output;
 
 	if(event.request.type == "LaunchRequest") {
 		// If it contains an accessToken, assign it to sparkAccessToken.
@@ -19,25 +21,24 @@ exports.handler = (event, context, callback) => {
 			Spark.sparkAccessToken = event.session.user.accessToken;
 			return launchHelper(event.request, event.session);
 		} else {
-			var sessionAttribute = {};
-			var output = "Please login into your Cisco Spark developer account";
+			sessionAttribute = {};
+			output = "Please login into your Cisco Spark developer account";
 			shouldEndSession = true;
 			return generateResponse((buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
 		}
 	} else if(event.request.type == "IntentRequest") {
-		if (event.session.user.hasOwnProperty(sparkAccessToken)) { // To DO: OwnProperty?
+		if (event.session.user.hasOwnProperty('accessToken')) { 
 			Spark.sparkAccessToken = event.session.user.accessToken;
 			return intentHelper(event.request, event.session);
 		} else {
-			var sessionAttribute = {};
-			var output = "Please login into your Cisco Spark developer account";
-			var shouldEndSession = true;
+			sessionAttribute = {};
+			output = "Please login into your Cisco Spark developer account";
+			shouldEndSession = true;
 			return generateResponse((buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
 		}
 	} else if(event.request.type == "SessionEndedRequest") {
 		return sessionEndedHelper(event.request, event.session);
 	}
-
 
 // Here come the Helper functions
 	launchHelper = (eventRequest, eventSession) => {
@@ -47,6 +48,8 @@ exports.handler = (event, context, callback) => {
 	intentHelper = (intentRequest, intentSession) => {
 		var intent = intentRequest.intent;
 		var intentName = intentRequest.intent.name;
+		var output;
+		var sessionAttribute;
 
 		if(intentName == "echoSparkRecents") {
 			return Intents.getRecents(intent, intentSession);
@@ -62,9 +65,16 @@ exports.handler = (event, context, callback) => {
 			return Intents.getNoIntent(intent, intentSession);
 		} else {
 			// Invalid intent
+			if(session.hasOwnProperty('attributes')) {
+				sessionAttribute = session.attributes;
+				output = "Could you repeat that, please";
+			} else {
+				sessionAttribute = {};
+				output = "Could you repeat that, please";
+			}	
 		}
-
-		return getResponse();
+		var shouldEndSession = false;
+		return Spark.generateResponse(buildSpeechletResponse(output, shouldEndSession), sessionAttribute);
 	}
 
 	sessionEndedHelper = (eventRequest, eventSession) => {

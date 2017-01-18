@@ -45,7 +45,7 @@ echoSparkRecents = (roomVal) => {
 							var displayNameDict = spark.getMethod('people', {'personId': personId});
 							var displayName;
 							if(displayNameDict.hasownProperty('displayName') && displayNameDict.displayName !="") 
-								displayName = re.sub(r'\([^)]*\)', '', displayNameDict.displayName); // ???***Needs testing
+								displayName = displayNameDict.displayName.replace('\([^)]*\)', '');
 							else
 								displayName = 'Unknown';
 							whatsNewDict = {'Name': displayName, 'Message': messageText};
@@ -59,7 +59,7 @@ echoSparkRecents = (roomVal) => {
 					speechOutput = "Your most recent messages in spark room " + ": " + roomMatch;
 					for(var item in range(whatsNewList.length - 1, -1, -1)) 
 					{
-						if(item == whatsNewList.length - 1):
+						if(item == whatsNewList.length - 1)
 							speechOutput = speechOutput + ". Message from " + whatsNewList[item].Name + " .. " + whatsNewList[item].Message; 
 						if(item == whatsNewList.length - 2)
 							speechOutput = speechOutput + ". Followed by message from " + whatsNewList[item].Name + " .. " + whatsNewList[item].Message;
@@ -147,7 +147,6 @@ recentActivity = () => {
 		speech_output = "There was an issue connecting to Cisco Spark. Please try again in a few minutes.";
 
 	return speech_output;
-
 }
 
 echoSparkConfirmRoomToMessage = (roomVal) => {

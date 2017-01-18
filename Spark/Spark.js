@@ -3,7 +3,6 @@ var request = require('request');
 var sparkDeveloperUrl = 'https://api.ciscospark.com/v1';
 var sparkAccessToken = null;
 
-// Check null or None
 getMethod = (getParam, getData = null) => {
   if(sparkAccessToken == null) {
     return "Invalid Request, Access token required.";
@@ -13,27 +12,24 @@ getMethod = (getParam, getData = null) => {
         var url = sparkDeveloperUrl + '/' + getParam + '/';
         return getRequest(url, sparkAccessToken);
       }
-      // TO DO : check if getData instanceof dict ?
-      if(getData.hasOwnProperty(roomId) && getData.hasOwnProperty('showSipAddress') && getData instanceof dict) {
+      if(getData.hasOwnProperty(roomId) && getData.hasOwnProperty('showSipAddress') && getData instanceof Map) {
         var url = sparkDeveloperUrl + '/' + getParam + '/' + getData.roomId + '?' + 'showSipAddress=' + getData.showSipAddress;
         return getRequest(url, sparkAccessToken);
       }
-      if(getData.hasOwnProperty(roomId) && getData instanceof dict) {
+      if(getData.hasOwnProperty(roomId) && getData instanceof Map) {
         var url = sparkDeveloperUrl + '/' + getParam + '/' + getData.roomId;
         return getRequest(url, sparkAccessToken);
-      } else if(getData instanceof dict) {
-       // TO DO : substitute urllib
-        var encodedData = urllib.urlencode(getData)
+      } else if(getData instanceof Map) {
+        var encodedData = encodeQueryData(getData)
         var url = sparkDeveloperUrl + '/' + getParam + '/' + '?' + encodedData;
         return getRequest(url, sparkAccessToken);
       }
-    } else if(getParam == 'messages') { // TO DO : Check exact usage here
-        if(getData.hasOwnProperty('messageId') && getData instanceof dict) {
+    } else if(getParam == 'messages') { 
+        if(getData.hasOwnProperty('messageId') && getData instanceof Map) {
           var url = sparkDeveloperUrl + '/' + getParam + '/' + getData.messageId;
           return getRequest(url, sparkAccessToken);
-        } else if(getData instanceof dict) {
-       // TO DO : substitute urllib
-          var encodedData = urllib.urlencode(getData)
+        } else if(getData instanceof Map) {
+          var encodedData = encodeQueryData(getData)
           var url = sparkDeveloperUrl + '/' + getParam + '/' + '?' + encodedData;
           return getRequest(url, sparkAccessToken);
         } else {
@@ -51,18 +47,18 @@ postMethod = (postParam, postData) => {
     return "Invalid Request, Access token required.";
   } else {
     if(postParam == 'messages') {
-      // TO DO : find a better way to use isSubset
+      // TO DO : 
       // check if isSubset and instanceof
       if((_.some(postData, function(val) { return _.isEqual(val, {'roomId', 'text'});})) 
-        && (postData instanceof dict)) {
+        && (postData instanceof Map)) {
           var url = sparkDeveloperUrl + '/' + postData + '/';
           return postRequest(url, sparkAccessToken, postData);
       } else if((_.some(postData, function(val) { return _.isEqual(val, {'toPersonId', 'text'});})) 
-        && (postData instanceof dict)) {
+        && (postData instanceof Map)) {
           var url = sparkDeveloperUrl + '/' + postData + '/';
           return postRequest(url, sparkAccessToken, postData);
       } else if((_.some(postData, function(val) { return _.isEqual(val, {'toPersonEmail', 'text'});})) 
-        && (postData instanceof dict)) {
+        && (postData instanceof Map)) {
           var url = sparkDeveloperUrl + '/' + postData + '/';
           return postRequest(url, sparkAccessToken, postData);
       } else {
@@ -74,6 +70,12 @@ postMethod = (postParam, postData) => {
 
 // Helpers
 
+encodeQueryData = (data) => {
+   let ret = [];
+   for (let d in data)
+     ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+   return ret.join('&');
+}
 
 getRequest = (requestUrl, accessToken) => {
 
