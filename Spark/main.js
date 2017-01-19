@@ -3,12 +3,7 @@ var Intents = require ('Intents.js');
 var Actions = require ('Actions.js');
 
 lambda_handler = (event, context, callback) => {
-
 	var sparkAccessToken = "MjYyZThjZGQtNTlhMS00ZTI5LWJlZTEtYjVhZDUzODY1YWU1YTJhZDY2ZjYtNTA2";
-
-	//TO DO : Invalid app check
-
-	//TO DO : New session check
 
 	event.session.user.accessToken = sparkAccessToken;
 	var sessionAttribute;

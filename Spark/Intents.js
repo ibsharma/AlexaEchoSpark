@@ -1,4 +1,4 @@
-require ('Actions.js');
+var Actions = require ('Actions.js');
 
 getRecents = (intent, intentSession) => {
 	if(intent.slots.Room.hasOwnProperty('value')) {
@@ -126,7 +126,7 @@ getYesIntent = (intent, intentSession) => {
 		} else if((recentIntent == "echoSparkConfirmRoomToMessage") && intentSession.attributes.echoSparkConfirmRoomToMessage.roomId != null) {
 			intentSession.attributes.intentSequence.append('echoSparkRoomConfirm');
 			sessionAttribute = intentSession.attributes;
-			output = Actions.echoSparkSendMessage(message, roomId);
+			output = "Would you like to send the message?"
 		} else {
 			sessionAttribute = intentSession.attributes;
 			output = "Can you repeat that, please";

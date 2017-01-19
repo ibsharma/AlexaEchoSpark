@@ -131,7 +131,7 @@ recentActivity = () => {
 		{
 			for(var room in roomsListParsed)
 			{
-				if(room.Last Activity == lastActivity)
+				if(room['Last Activity'] == lastActivity)
 				{
 					roomListLastActivity.push(room);
 					speech_output = speech_output + " , " + roomListLastActivity[roomIndex].Name; 

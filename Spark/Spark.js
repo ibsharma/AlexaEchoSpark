@@ -47,17 +47,15 @@ postMethod = (postParam, postData) => {
     return "Invalid Request, Access token required.";
   } else {
     if(postParam == 'messages') {
-      // TO DO : 
-      // check if isSubset and instanceof
-      if((_.some(postData, function(val) { return _.isEqual(val, {'roomId', 'text'});})) 
+      if(postData.hasOwnProperty('roomId') && postData.hasOwnProperty('text')
         && (postData instanceof Map)) {
           var url = sparkDeveloperUrl + '/' + postData + '/';
           return postRequest(url, sparkAccessToken, postData);
-      } else if((_.some(postData, function(val) { return _.isEqual(val, {'toPersonId', 'text'});})) 
+      } else if(postData.hasOwnProperty('toPersonId') && postData.hasOwnProperty('text') 
         && (postData instanceof Map)) {
           var url = sparkDeveloperUrl + '/' + postData + '/';
           return postRequest(url, sparkAccessToken, postData);
-      } else if((_.some(postData, function(val) { return _.isEqual(val, {'toPersonEmail', 'text'});})) 
+      } else if(postData.hasOwnProperty('toPersonEmail') && postData.hasOwnProperty('text')
         && (postData instanceof Map)) {
           var url = sparkDeveloperUrl + '/' + postData + '/';
           return postRequest(url, sparkAccessToken, postData);
@@ -65,8 +63,8 @@ postMethod = (postParam, postData) => {
         return "Unsupported request";
       }
     }
-}
-
+  }
+} 
 
 // Helpers
 
@@ -78,7 +76,6 @@ encodeQueryData = (data) => {
 }
 
 getRequest = (requestUrl, accessToken) => {
-
   var headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json; charset=UTF-8',
